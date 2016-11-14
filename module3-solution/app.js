@@ -31,7 +31,6 @@
 
 			var promise = MenuSearchService.getMatchedMenuItems(vm.searchTerm);
 			promise.then(function (result) {
-				console.log(result);
 				vm.itemList = result;
 			});
 		}
