@@ -9,7 +9,7 @@
 
 
 	function foundItemsDirective() {
-		return  {
+		return {
 			templateUrl: 'menuItemList.html',
 			scope: {
 				foundItems: '<items',
@@ -17,34 +17,27 @@
 			}
 		};
 	}
-	
+
 
 	NarrowItDownController.$inject = ['MenuSearchService'];
 
 	function NarrowItDownController(MenuSearchService) {
 		var vm = this;
 		vm.itemList = [];
+		vm.searchTerm = "";
 
-		vm.getMenu = function (desc) {
+		vm.getMenu = function () {
 			var count = 0;
-			var promise = MenuSearchService.getMatchedMenuItems();
+
+			var promise = MenuSearchService.getMatchedMenuItems(vm.searchTerm);
 			promise.then(function (result) {
-				var foundItems = result.data.menu_items;
-				for (var index = 0; index < foundItems.length; index++) {
-					if (desc == foundItems[index].description) {
-						vm.itemList.push(foundItems[index]);
-						count++;
-						break;
-					}
-				}
-				if(count == 0){
-					vm.msg = "Nothing found";
-				}
+				console.log(result);
+				vm.itemList = result;
 			});
 		}
 
 		vm.removeItem = function (itemIndex) {
-			vm.itemList.splice(itemIndex, 1);
+			MenuSearchService.removeItem(itemIndex);
 		}
 	};
 
@@ -52,14 +45,38 @@
 
 	function MenuSearchService($http, ApiBasePath) {
 		var service = this;
+		var foundItems = [];
 
-		service.getMatchedMenuItems = function () {
-			var response = $http({
-				method: "GET",
-				url: (ApiBasePath + "/menu_items.json")
-			});
-
-			return response;
+		service.removeItem = function (index) {
+			foundItems.splice(index, 1);
 		}
+
+		service.getMatchedMenuItems = function (searchTerm) {
+
+			return $http({
+					method: "GET",
+					url: (ApiBasePath + "/menu_items.json"),
+				}).then(function (result) {
+					foundItems = [];
+
+					for (var i = 0; i < result.data.menu_items.length; i++) {
+						var description = result.data.menu_items[i].description;
+						console.log(description);
+						if (description.toLowerCase().indexOf(searchTerm) !== -1) {
+							
+							foundItems.push({
+								name: result.data.menu_items[i].name,
+								short_name: result.data.menu_items[i].short_name,
+								description: result.data.menu_items[i].description
+							});
+						}
+					}
+					return foundItems;
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+		}
+
 	}
 })();
