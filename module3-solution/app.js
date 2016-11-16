@@ -78,7 +78,9 @@
 					}
 				}
 				return foundItems;
-			});
+			}).catch(function (error) {
+				console.log(error);
+			});;
 		}
 
 	}
