@@ -17,7 +17,7 @@
 			}
 		};
 	}
-	
+
 	NarrowItDownController.$inject = ['MenuSearchService'];
 	function NarrowItDownController(MenuSearchService) {
 		var vm = this;
@@ -34,7 +34,7 @@
 				}else{
 					vm.msg = true;
 				}
-					
+
 			}).catch(function (error) {
 				console.log(error);
 			});
@@ -63,7 +63,7 @@
 				method: "GET",
 				url: (ApiBasePath + "/menu_items.json"),
 			}).then(function (result) {
-				
+
 				foundItems = [];
 
 				for (var i = 0; i < result.data.menu_items.length; i++) {
@@ -80,7 +80,7 @@
 				return foundItems;
 			}).catch(function (error) {
 				console.log(error);
-			});;
+			});
 		}
 
 	}

@@ -1,0 +1,23 @@
+<a ui-sref="home">Home</a> &lt;
+<a ui-sref="categories">Categories list</a>
+<h2>{{itemCtrl.name}}</h2>
+<table border="1">
+  <thead>
+    <tr style="text-align:center;background-color:gray">
+      <td>Name</td>
+      <td>Short name</td>
+      <td>Price large</td>
+      <td>Price small</td>
+      <td>Description</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="items in itemCtrl.items">
+      <td> {{ items.name }}</td>
+      <td>{{ items.short_name }}</td>
+      <td> {{ items.price_large }}</td>
+      <td>{{ items.price_small }}</td>
+      <td>{{ items.description }}</td>
+    </tr>
+  </tbody>
+</table>
